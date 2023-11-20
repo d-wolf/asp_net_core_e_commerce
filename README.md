@@ -4,7 +4,11 @@ A Generic ASP.NET Core E-Commerce Web App.
 ## Geting Started
 [here](https://learn.microsoft.com/en-us/aspnet/core/getting-started/)
 
-## Common CLI
+## Common VS Code settings
+### VSCode disable auto solution creation
+* auto .sln creation by vscode on run can be disabled by setting `"dotnet.automaticallyCreateSolutionInWorkspace": false` in VS Code user settings
+
+## Common Core CLI
 ### Create Multi Project Solution Core CLI
 1. create a solution `dotnet new sln -o <SOLUTION_NAME>`
 2. go into folder `cd <SOLUTION_NAME>`

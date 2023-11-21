@@ -8,7 +8,7 @@ A Generic ASP.NET Core E-Commerce Web App.
 ### VSCode disable auto solution creation
 * auto .sln creation by vscode on run can be disabled by setting `"dotnet.automaticallyCreateSolutionInWorkspace": false` in VS Code user settings
 
-## Common Core CLI
+## Common CLI
 ### Create Multi Project Solution Core CLI
 1. create a solution `dotnet new sln -o <SOLUTION_NAME>`
 2. go into folder `cd <SOLUTION_NAME>`
@@ -17,6 +17,10 @@ A Generic ASP.NET Core E-Commerce Web App.
 
 ### Postgres
 * create db for user postgres with `CREATE DATABASE ecommerce OWNER postgres;`
+
+### EF Core
+* add migration `dotnet ef migrations add <NAME> -o Data/Migrations`
+* create schema from migration `dotnet ef database update`
 
 ### Run
 * run with hot reload enabled `dotnet watch`

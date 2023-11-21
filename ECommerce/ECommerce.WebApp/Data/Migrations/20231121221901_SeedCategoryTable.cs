@@ -18,8 +18,8 @@ namespace ECommerce.WebApp.Data.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "Action" },
-                    { 2, 1, "SciFi" },
-                    { 3, 1, "History" }
+                    { 2, 2, "SciFi" },
+                    { 3, 3, "History" }
                 });
         }
 

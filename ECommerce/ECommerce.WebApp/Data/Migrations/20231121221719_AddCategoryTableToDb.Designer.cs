@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerce.WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231121220002_AddCategoryTableToDb")]
+    [Migration("20231121221719_AddCategoryTableToDb")]
     partial class AddCategoryTableToDb
     {
         /// <inheritdoc />

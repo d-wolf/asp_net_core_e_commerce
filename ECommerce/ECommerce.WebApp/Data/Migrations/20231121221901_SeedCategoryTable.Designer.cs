@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerce.WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231121220113_SeedCategoryTable")]
+    [Migration("20231121221901_SeedCategoryTable")]
     partial class SeedCategoryTable
     {
         /// <inheritdoc />
@@ -53,13 +53,13 @@ namespace ECommerce.WebApp.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DisplayOrder = 1,
+                            DisplayOrder = 2,
                             Name = "SciFi"
                         },
                         new
                         {
                             Id = 3,
-                            DisplayOrder = 1,
+                            DisplayOrder = 3,
                             Name = "History"
                         });
                 });

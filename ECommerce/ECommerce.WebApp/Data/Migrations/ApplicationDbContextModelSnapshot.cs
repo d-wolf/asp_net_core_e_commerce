@@ -50,13 +50,13 @@ namespace ECommerce.WebApp.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DisplayOrder = 1,
+                            DisplayOrder = 2,
                             Name = "SciFi"
                         },
                         new
                         {
                             Id = 3,
-                            DisplayOrder = 1,
+                            DisplayOrder = 3,
                             Name = "History"
                         });
                 });

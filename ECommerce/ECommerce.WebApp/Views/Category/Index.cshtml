@@ -4,24 +4,29 @@
 
 <div class="mt-4">
     <table class="table table-bordered table-striped">
-        <tr>
-            <th>
-                Category Name
-            </th>
-            <th>
-                Display Order
-            </th>
-        </tr>
-        @foreach (var c in Model)
-        {
+        <thead>
             <tr>
                 <th>
-                    @c.Name
+                    Category Name
                 </th>
                 <th>
-                    @c.DisplayOrder
+                    Display Order
                 </th>
             </tr>
-        }
+        </thead>
+
+        <tbody>
+            @foreach (var obj in Model.OrderBy(x => x.DisplayOrder))
+            {
+                <tr>
+                    <th>
+                        @obj.Name
+                    </th>
+                    <th>
+                        @obj.DisplayOrder
+                    </th>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>

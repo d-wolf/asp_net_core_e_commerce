@@ -15,6 +15,9 @@ A Generic ASP.NET Core E-Commerce Web App.
 3. create proj `dotnet new mvc -o <SOLUTION_NAME>.<SOLUTION_PROJECT_NAME>`
 4. add to solution with `dotnet sln add <SOLUTION_PROJECT_NAME>/<SOLUTION_PROJECT_NAME>.csproj --in-root`
 
+### Postgres
+* create db for user postgres with `CREATE DATABASE ecommerce OWNER postgres;`
+
 ### Run
 * run with hot reload enabled `dotnet watch`
 * run a profile from [launchSettings.json](ECommerce/ECommerce.WebApp/Properties/launchSettings.json) with `dotnet run --launch-profile "<PROFILE_NAME>"` e.g. `dotnet run --launch-profile "http"`

@@ -29,7 +29,81 @@ public class CategoryController : Controller
     [HttpPost]
     public IActionResult Create(Category category)
     {
-        _context.Add(category);
+        // if (category.Name.Equals("test", StringComparison.CurrentCultureIgnoreCase))
+        // {
+        //     ModelState.AddModelError("", "Test is an invalid value.");
+        // }
+        // if (category.Name == category.DisplayOrder.ToString())
+        // {
+        //     ModelState.AddModelError("Name", "Name can't match the display order.");
+        // }
+        if (ModelState.IsValid)
+        {
+            _context.Add(category);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Category");
+        }
+
+        return View();
+    }
+
+    public IActionResult Edit(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+
+        var category = _context.Categories.SingleOrDefault(x => x.Id == id);
+
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        return View(category);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Category category)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Update(category);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Category");
+        }
+
+        return View();
+    }
+
+    public IActionResult Delete(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+
+        var category = _context.Categories.SingleOrDefault(x => x.Id == id);
+
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        return View(category);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public IActionResult DeletePost(int? id)
+    {
+        var category = _context.Categories.SingleOrDefault(x => x.Id == id);
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        _context.Remove(category);
         _context.SaveChanges();
         return RedirectToAction("Index", "Category");
     }

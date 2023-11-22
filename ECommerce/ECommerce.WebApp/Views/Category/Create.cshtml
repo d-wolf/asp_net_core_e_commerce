@@ -1,0 +1,26 @@
+@model Category
+
+<div class="container">
+    <h2>Create Category</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="inputName">Category Name</label>
+            <input type="text" class="form-control" id="inputName" aria-describedby="emailHelp"
+                placeholder="Name" asp-for="Name">
+        </div>
+        <div class="form-group mt-4">
+            <label for="inputDisplayOrder">Display Order</label>
+            <input type="number" class="form-control" id="inputDisplayOrder" placeholder="Display Order"
+                asp-for="DisplayOrder">
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a class="btn btn-light w-100" asp-controller="Category" asp-action="Index">Back</a>
+            </div>
+        </div>
+    </form>
+</div>

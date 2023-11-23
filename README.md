@@ -19,7 +19,7 @@ A Generic ASP.NET Core E-Commerce Web App.
 7. add references between projects with `dotnet add reference ../<SOLUTION_PROJECT_NAME>`
 
 ### Postgres
-* create db for user postgres with `CREATE DATABASE ecommerce OWNER postgres;`
+* create db for user postgres with `CREATE DATABASE <DB_NAME> OWNER <USER_NAME>;`
 
 ### EF Core
 * add migration `dotnet ef migrations add <NAME> -o Data/Migrations`

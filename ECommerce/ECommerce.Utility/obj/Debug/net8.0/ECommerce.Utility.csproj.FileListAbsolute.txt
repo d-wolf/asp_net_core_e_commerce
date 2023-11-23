@@ -1,0 +1,12 @@
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/bin/Debug/net8.0/ECommerce.Utility.deps.json
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/bin/Debug/net8.0/ECommerce.Utility.dll
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/bin/Debug/net8.0/ECommerce.Utility.pdb
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.GeneratedMSBuildEditorConfig.editorconfig
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.AssemblyInfoInputs.cache
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.AssemblyInfo.cs
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.csproj.CoreCompileInputs.cache
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.sourcelink.json
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.dll
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/refint/ECommerce.Utility.dll
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ECommerce.Utility.pdb
+/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Utility/obj/Debug/net8.0/ref/ECommerce.Utility.dll

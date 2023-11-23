@@ -1,6 +1,6 @@
 ﻿namespace ECommerce.Utility;
 
-public class Class1
+public static class SD
 {
 
 }

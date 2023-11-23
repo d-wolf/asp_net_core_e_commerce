@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ECommerce.WebApp.Data.Migrations
+namespace ECommerce.DataAccess.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTableToDb : Migration

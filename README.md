@@ -16,6 +16,7 @@ A Generic ASP.NET Core E-Commerce Web App.
 4. add to solution with `dotnet sln add <SOLUTION_PROJECT_NAME>/<SOLUTION_PROJECT_NAME>.csproj --in-root`
 5. `dotnet new classlib -o <SOLUTION_PROJECT_NAME>`
 6. add to solution with `dotnet sln add <SOLUTION_PROJECT_NAME>/<SOLUTION_PROJECT_NAME>.csproj --in-root`
+7. add references between projects with `dotnet add reference ../<SOLUTION_PROJECT_NAME>`
 
 ### Postgres
 * create db for user postgres with `CREATE DATABASE ecommerce OWNER postgres;`

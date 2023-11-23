@@ -14,6 +14,8 @@ A Generic ASP.NET Core E-Commerce Web App.
 2. go into folder `cd <SOLUTION_NAME>`
 3. create proj `dotnet new mvc -o <SOLUTION_NAME>.<SOLUTION_PROJECT_NAME>`
 4. add to solution with `dotnet sln add <SOLUTION_PROJECT_NAME>/<SOLUTION_PROJECT_NAME>.csproj --in-root`
+5. `dotnet new classlib -o <SOLUTION_PROJECT_NAME>`
+6. add to solution with `dotnet sln add <SOLUTION_PROJECT_NAME>/<SOLUTION_PROJECT_NAME>.csproj --in-root`
 
 ### Postgres
 * create db for user postgres with `CREATE DATABASE ecommerce OWNER postgres;`

@@ -6,14 +6,12 @@ namespace ECommerce.WebApp.Controllers;
 
 public class CategoryController : Controller
 {
-
     readonly ApplicationDbContext _context;
 
     public CategoryController(ApplicationDbContext context)
     {
         _context = context;
     }
-
 
     public IActionResult Index()
     {

@@ -29,18 +29,11 @@ public class CategoryController : Controller
     [HttpPost]
     public IActionResult Create(Category category)
     {
-        // if (category.Name.Equals("test", StringComparison.CurrentCultureIgnoreCase))
-        // {
-        //     ModelState.AddModelError("", "Test is an invalid value.");
-        // }
-        // if (category.Name == category.DisplayOrder.ToString())
-        // {
-        //     ModelState.AddModelError("Name", "Name can't match the display order.");
-        // }
         if (ModelState.IsValid)
         {
             _context.Add(category);
             _context.SaveChanges();
+            TempData["success"] = "Category created successfully";
             return RedirectToAction("Index", "Category");
         }
 
@@ -71,6 +64,7 @@ public class CategoryController : Controller
         {
             _context.Update(category);
             _context.SaveChanges();
+            TempData["success"] = "Category updated successfully";
             return RedirectToAction("Index", "Category");
         }
 
@@ -105,6 +99,7 @@ public class CategoryController : Controller
 
         _context.Remove(category);
         _context.SaveChanges();
+        TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index", "Category");
     }
 }

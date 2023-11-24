@@ -8,7 +8,7 @@ namespace ECommerce.DataAccess.Repository
 {
     public class Repository<T>(ApplicationDbContext context) : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _context = context;
+        protected readonly ApplicationDbContext _context = context;
 
         public void Add(T entity)
         {

@@ -6,8 +6,6 @@ namespace ECommerce.DataAccess.Repository
 {
     public class CategoryRepository(ApplicationDbContext context) : Repository<Category>(context), ICategoryRepository
     {
-        private readonly ApplicationDbContext _context = context;
-
         public void Save()
         {
             _context.SaveChanges();

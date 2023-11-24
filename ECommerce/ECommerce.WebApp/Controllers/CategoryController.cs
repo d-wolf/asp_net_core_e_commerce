@@ -1,21 +1,16 @@
-using ECommerce.DataAccess.Data;
+using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.WebApp.Controllers;
 
-public class CategoryController : Controller
+public class CategoryController(ICategoryRepository categoryRepository) : Controller
 {
-    readonly ApplicationDbContext _context;
-
-    public CategoryController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    readonly ICategoryRepository _categoryRepository = categoryRepository;
 
     public IActionResult Index()
     {
-        var categoryList = _context.Categories.ToList();
+        var categoryList = _categoryRepository.GetAll().ToList();
         return View(categoryList);
     }
 
@@ -29,8 +24,8 @@ public class CategoryController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(category);
-            _context.SaveChanges();
+            _categoryRepository.Add(category);
+            _categoryRepository.Save();
             TempData["success"] = "Category created successfully";
             return RedirectToAction("Index", "Category");
         }
@@ -45,7 +40,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        var category = _context.Categories.SingleOrDefault(x => x.Id == id);
+        var category = _categoryRepository.GetFirstOrDefault(x => x.Id == id);
 
         if (category == null)
         {
@@ -60,8 +55,8 @@ public class CategoryController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Update(category);
-            _context.SaveChanges();
+            _categoryRepository.Update(category);
+            _categoryRepository.Save();
             TempData["success"] = "Category updated successfully";
             return RedirectToAction("Index", "Category");
         }
@@ -76,7 +71,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        var category = _context.Categories.SingleOrDefault(x => x.Id == id);
+        var category = _categoryRepository.GetFirstOrDefault(x => x.Id == id);
 
         if (category == null)
         {
@@ -89,14 +84,14 @@ public class CategoryController : Controller
     [HttpPost, ActionName("Delete")]
     public IActionResult DeletePost(int? id)
     {
-        var category = _context.Categories.SingleOrDefault(x => x.Id == id);
+        var category = _categoryRepository.GetFirstOrDefault(x => x.Id == id);
         if (category == null)
         {
             return NotFound();
         }
 
-        _context.Remove(category);
-        _context.SaveChanges();
+        _categoryRepository.Remove(category);
+        _categoryRepository.Save();
         TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index", "Category");
     }

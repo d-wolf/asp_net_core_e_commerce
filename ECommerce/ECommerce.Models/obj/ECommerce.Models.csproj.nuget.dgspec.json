@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj": {}
+    "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj": {}
   },
   "projects": {
-    "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj": {
+    "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj",
+        "projectUniqueName": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj",
         "projectName": "ECommerce.Models",
-        "projectPath": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj",
-        "packagesPath": "/Users/daniel/.nuget/packages/",
-        "outputPath": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/obj/",
+        "projectPath": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj",
+        "packagesPath": "/Users/danielwolf/.nuget/packages/",
+        "outputPath": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/obj/",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/Users/daniel/.nuget/NuGet/NuGet.Config"
+          "/Users/danielwolf/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

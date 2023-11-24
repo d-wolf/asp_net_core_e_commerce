@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ECommerce.Models
-build_property.ProjectDir = /Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/
+build_property.ProjectDir = /Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

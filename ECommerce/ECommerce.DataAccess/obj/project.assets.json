@@ -2311,19 +2311,23 @@
     ]
   },
   "packageFolders": {
-    "/Users/daniel/.nuget/packages/": {}
+    "/Users/danielwolf/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.DataAccess/ECommerce.DataAccess.csproj",
+      "projectUniqueName": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.DataAccess/ECommerce.DataAccess.csproj",
       "projectName": "ECommerce.DataAccess",
-      "projectPath": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.DataAccess/ECommerce.DataAccess.csproj",
-      "packagesPath": "/Users/daniel/.nuget/packages/",
-      "outputPath": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.DataAccess/obj/",
+      "projectPath": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.DataAccess/ECommerce.DataAccess.csproj",
+      "packagesPath": "/Users/danielwolf/.nuget/packages/",
+      "outputPath": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.DataAccess/obj/",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "/Users/daniel/.nuget/NuGet/NuGet.Config"
+        "/Users/danielwolf/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2335,8 +2339,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj": {
-              "projectPath": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj"
+            "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj": {
+              "projectPath": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj"
             }
           }
         }

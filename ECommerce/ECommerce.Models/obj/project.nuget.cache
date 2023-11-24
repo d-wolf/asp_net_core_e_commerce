@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SwIHmQKQUNeHMbj6rPcS3MRNL8GDRRGai0DRRcJgSuWe2gXiG9StM7MuiqfjMuF7gx0FZjyqpybEkh3o9/X9YA==",
+  "dgSpecHash": "htaPSCPad9E4nPLjbrcPuyDIbgFMcOC+FkElKEMIXZ5ZelQU/oW1XEcTiOhsjZUEPDGLCsUy7eJlxP92mR71VA==",
   "success": true,
-  "projectFilePath": "/Users/daniel/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj",
+  "projectFilePath": "/Users/danielwolf/Documents/GitHub/asp_net_core_e_commerce/ECommerce/ECommerce.Models/ECommerce.Models.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

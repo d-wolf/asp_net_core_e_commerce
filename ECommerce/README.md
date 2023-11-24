@@ -17,3 +17,8 @@ In VSCode .sln will be created automatically on run. It can be disabled by setti
 4. add the new project to a solution with `dotnet sln add <SOLUTION_PROJECT_NAME>/<SOLUTION_PROJECT_NAME>.csproj --in-root`
 5. to add references between projects run `dotnet add reference ../<SOLUTION_PROJECT_NAME>` from taget project folder
 
+## Add Areas
+* `dotnet tool install -g dotnet-aspnet-codegenerator`
+* add `export PATH="$PATH":"$HOME/.dotnet/tools"` to your `.zrsh`
+* `dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version <VERSION>`
+* `dotnet-aspnet-codegenerator area <AREA_NAME>`

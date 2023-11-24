@@ -19,6 +19,6 @@ In VSCode .sln will be created automatically on run. It can be disabled by setti
 
 ## Add Areas
 * `dotnet tool install -g dotnet-aspnet-codegenerator`
-* add `export PATH="$PATH":"$HOME/.dotnet/tools"` to your `.zrsh`
+* add `export PATH="$PATH":"$HOME/.dotnet/tools"` to your `.zshrc`
 * `dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version <VERSION>`
 * `dotnet-aspnet-codegenerator area <AREA_NAME>`

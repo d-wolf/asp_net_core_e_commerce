@@ -2,8 +2,9 @@ using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.WebApp.Controllers;
+namespace ECommerce.WebApp.Areas.Admin.Controllers;
 
+[Area("Admin")]
 public class CategoryController(IUnitOfWork unitOfWork) : Controller
 {
     readonly IUnitOfWork _unitOfWork = unitOfWork;

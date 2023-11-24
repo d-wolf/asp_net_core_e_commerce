@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.WebApp.Controllers;
 
-public class CategoryController(ICategoryRepository categoryRepository) : Controller
+public class CategoryController(IUnitOfWork unitOfWork) : Controller
 {
-    readonly ICategoryRepository _categoryRepository = categoryRepository;
+    readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public IActionResult Index()
     {
-        var categoryList = _categoryRepository.GetAll().ToList();
+        var categoryList = _unitOfWork.Category.GetAll().ToList();
         return View(categoryList);
     }
 
@@ -24,8 +24,8 @@ public class CategoryController(ICategoryRepository categoryRepository) : Contro
     {
         if (ModelState.IsValid)
         {
-            _categoryRepository.Add(category);
-            _categoryRepository.Save();
+            _unitOfWork.Category.Add(category);
+            _unitOfWork.Save();
             TempData["success"] = "Category created successfully";
             return RedirectToAction("Index", "Category");
         }
@@ -40,7 +40,7 @@ public class CategoryController(ICategoryRepository categoryRepository) : Contro
             return NotFound();
         }
 
-        var category = _categoryRepository.GetFirstOrDefault(x => x.Id == id);
+        var category = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
 
         if (category == null)
         {
@@ -55,8 +55,8 @@ public class CategoryController(ICategoryRepository categoryRepository) : Contro
     {
         if (ModelState.IsValid)
         {
-            _categoryRepository.Update(category);
-            _categoryRepository.Save();
+            _unitOfWork.Category.Update(category);
+            _unitOfWork.Save();
             TempData["success"] = "Category updated successfully";
             return RedirectToAction("Index", "Category");
         }
@@ -71,7 +71,7 @@ public class CategoryController(ICategoryRepository categoryRepository) : Contro
             return NotFound();
         }
 
-        var category = _categoryRepository.GetFirstOrDefault(x => x.Id == id);
+        var category = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
 
         if (category == null)
         {
@@ -84,14 +84,14 @@ public class CategoryController(ICategoryRepository categoryRepository) : Contro
     [HttpPost, ActionName("Delete")]
     public IActionResult DeletePost(int? id)
     {
-        var category = _categoryRepository.GetFirstOrDefault(x => x.Id == id);
+        var category = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
         if (category == null)
         {
             return NotFound();
         }
 
-        _categoryRepository.Remove(category);
-        _categoryRepository.Save();
+        _unitOfWork.Category.Remove(category);
+        _unitOfWork.Save();
         TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index", "Category");
     }

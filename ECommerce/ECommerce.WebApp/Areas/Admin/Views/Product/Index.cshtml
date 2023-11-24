@@ -30,12 +30,23 @@
                             <th>
                                 ISBN
                             </th>
-                            <th></th>
+                            <th>
+                                List Price
+                            </th>
+                            <th>
+                                Author
+                            </th>
+                            <th>
+                                Categroy
+                            </th>
+                            <th>
+
+                            </th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach (var obj in Model)
+                        @foreach (var obj in Model.OrderBy(x => x.Title))
                         {
                             <tr>
                                 <td>
@@ -43,6 +54,15 @@
                                 </td>
                                 <td>
                                     @obj.ISBN
+                                </td>
+                                <td>
+                                    @obj.ListPrice
+                                </td>
+                                <td>
+                                    @obj.Author
+                                </td>
+                                <td>
+                                    @* @obj.ISBN *@
                                 </td>
                                 <td>
                                     <div class="w75 btn-group" role="group">

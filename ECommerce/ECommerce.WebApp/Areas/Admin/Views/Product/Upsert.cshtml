@@ -1,0 +1,86 @@
+@model ProductVM
+
+<div class="container">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header border-0 bg-primary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="py-2 text-white">@(Model.Product.Id != 0 ? "Edit Product" : "Create Product")</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <form method="post" enctype="multipart/form-data">
+                <input asp-for="Product.Id" hidden>
+                <div class="form-group">
+                    <label asp-for="Product.Title" class="pb-2"></label>
+                    <input type="text" class="form-control" asp-for="Product.Title">
+                    <span asp-validation-for="Product.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.Description" class="pb-2"></label>
+                    <textarea class="form-control" asp-for="Product.Description" rows="5"></textarea>
+                    <span asp-validation-for="Product.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.ISBN" class="pb-2"></label>
+                    <input type="text" class="form-control" asp-for="Product.ISBN">
+                    <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.Author" class="pb-2"></label>
+                    <input type="text" class="form-control" asp-for="Product.Author">
+                    <span asp-validation-for="Product.Author" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.ListPrice" class="pb-2"></label>
+                    <input type="number" class="form-control" asp-for="Product.ListPrice">
+                    <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.Price" class="pb-2"></label>
+                    <input type="number" class="form-control" asp-for="Product.Price">
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.Price50" class="pb-2"></label>
+                    <input type="number" class="form-control" asp-for="Product.Price50">
+                    <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.Price100" class="pb-2"></label>
+                    <input type="number" class="form-control" asp-for="Product.Price100">
+                    <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.ImageUrl" class="pb-2"></label>
+                    <input type="file" class="form-control" asp-for="Product.ImageUrl">
+                    <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-4">
+                    <label asp-for="Product.Category" class="pb-2"></label>
+                    <select asp-for="Product.Category" asp-items="@Model.CategoryList" class="form-select"
+                        aria-label="Default select example">
+                        <option disabled selected>-- Select Category --</option>
+                    </select>
+                    <span asp-validation-for="Product.Category" class="text-danger"></span>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">@(Model.Product.Id != 0 ? "Update" : "Create")</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="btn btn-light w-100" asp-controller="Product" asp-action="Index">Back</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}

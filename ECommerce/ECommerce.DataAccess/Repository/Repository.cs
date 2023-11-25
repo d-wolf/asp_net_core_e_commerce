@@ -15,14 +15,24 @@ namespace ECommerce.DataAccess.Repository
             _context.Set<T>().Add(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(params string[] includeProperties)
         {
-            return _context.Set<T>().AsNoTracking();
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var item in includeProperties)
+            {
+                query = query.Include(item);
+            }
+            return query.AsNoTracking();
         }
 
-        public T? GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        public T? GetFirstOrDefault(Expression<Func<T, bool>> filter, params string[] includeProperties)
         {
-            return _context.Set<T>()
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var item in includeProperties)
+            {
+                query = query.Include(item);
+            }
+            return query
                     .AsNoTracking()
                     .FirstOrDefault(filter);
         }

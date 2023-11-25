@@ -14,7 +14,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
 
     public IActionResult Index()
     {
-        var productList = _unitOfWork.Product.GetAll().ToList();
+        var productList = _unitOfWork.Product.GetAll("Category").ToList();
         return View(productList);
     }
 
@@ -88,35 +88,36 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
         return RedirectToAction("Index", "Product");
     }
 
+    #region API Calls
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var productList = _unitOfWork.Product.GetAll("Category").ToList();
+        return Json(new { data = productList });
+    }
+
     public IActionResult Delete(int? id)
     {
-        if (id == null || id == 0)
+        var productToDelete = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+        if (productToDelete == null)
         {
-            return NotFound();
+            return Json(new { success = false, message = "Error while deleting" });
         }
 
-        var product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
-
-        if (product == null)
+        if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
         {
-            return NotFound();
+            var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
+            if (System.IO.File.Exists(oldPath))
+            {
+                System.IO.File.Delete(oldPath);
+            }
         }
 
-        return View(product);
-    }
-
-    [HttpPost, ActionName("Delete")]
-    public IActionResult DeletePost(int? id)
-    {
-        var product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-
-        _unitOfWork.Product.Remove(product);
+        _unitOfWork.Product.Remove(productToDelete);
         _unitOfWork.Save();
-        TempData["success"] = "Product deleted successfully";
-        return RedirectToAction("Index", "Product");
+        return Json(new { success = true, message = "Successfully deleted" });
     }
+
+    #endregion
 }

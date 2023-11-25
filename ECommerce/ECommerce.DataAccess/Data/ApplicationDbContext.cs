@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext
                     ListPrice = 99,
                     Price = 90,
                     Price50 = 85,
-                    Price100 = 80
+                    Price100 = 80,
                 },
                 new Product
                 {

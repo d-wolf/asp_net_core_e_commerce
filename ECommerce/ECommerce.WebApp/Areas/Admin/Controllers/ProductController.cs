@@ -1,6 +1,7 @@
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ECommerce.WebApp.Areas.Admin.Controllers;
 
@@ -17,6 +18,14 @@ public class ProductController(IUnitOfWork unitOfWork) : Controller
 
     public IActionResult Create()
     {
+        var categorySelectionItems = _unitOfWork.Category.GetAll().Select(x => new SelectListItem
+        {
+            Text = x.Name,
+            Value = x.Id.ToString(),
+        });
+
+        ViewBag.CategoryList = categorySelectionItems;
+
         return View();
     }
 

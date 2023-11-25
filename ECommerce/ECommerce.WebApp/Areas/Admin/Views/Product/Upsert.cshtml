@@ -14,7 +14,7 @@
                 <input asp-for="Product.Id" hidden>
                 <div class="row">
 
-                    <div class="col-6">
+                    <div class="col">
                         <div class="form-group">
                             <label asp-for="Product.Title" class="pb-2"></label>
                             <input type="text" class="form-control" asp-for="Product.Title">
@@ -31,10 +31,9 @@
                             <span asp-validation-for="Product.Author" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <img src="@Model.Product.ImageUrl" width="100%"/>
+                    <div class="col" @(Model.Product.ImageUrl == null ? "hidden" : "")>
+                        <img src="@Model.Product.ImageUrl" width="100%" />
                     </div>
-
                 </div>
 
                 <div class="form-group mt-4">

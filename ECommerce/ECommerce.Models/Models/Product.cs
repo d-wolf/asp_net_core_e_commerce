@@ -42,6 +42,7 @@ public class Product
     [Range(1, 1000)]
     public double Price100 { get; set; }
 
+    [DisplayName("Image")]
     public string? ImageUrl { get; set; }
 
     [ForeignKey("Category")]

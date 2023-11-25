@@ -53,47 +53,39 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
     [HttpPost]
     public IActionResult Upsert(ProductVM productVM, IFormFile? file)
     {
+        if (!ModelState.IsValid) return View();
+
+
+        if (file != null)
+        {
+            if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+            {
+                var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productVM.Product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
+                if (System.IO.File.Exists(oldPath))
+                {
+                    System.IO.File.Delete(oldPath);
+                }
+            }
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string path = Path.Combine("images", "product", fileName);
+            using var fileStream = new FileStream(Path.Combine(_webHostEnvironment.WebRootPath, path), FileMode.Create);
+            file.CopyTo(fileStream);
+            productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
+        }
+
         if (productVM.Product.Id != 0)
         {
-            if (ModelState.IsValid)
-            {
-                if (file != null)
-                {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string path = Path.Combine("images", "product", fileName);
-                    using var fileStream = new FileStream(Path.Combine(_webHostEnvironment.WebRootPath, path), FileMode.Create);
-                    file.CopyTo(fileStream);
-                    productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
-                }
-
-                _unitOfWork.Product.Update(productVM.Product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
-                return RedirectToAction("Index", "Product");
-            }
+            _unitOfWork.Product.Update(productVM.Product);
+            TempData["success"] = "Product updated successfully";
         }
         else
         {
-            if (ModelState.IsValid)
-            {
-                if (file != null)
-                {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string path = Path.Combine("images", "product", fileName);
-                    using var fileStream = new FileStream(Path.Combine(_webHostEnvironment.WebRootPath, path), FileMode.Create);
-                    file.CopyTo(fileStream);
-                   productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
-                }
-
-                _unitOfWork.Product.Add(productVM.Product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
-                return RedirectToAction("Index", "Product");
-            }
+            _unitOfWork.Product.Add(productVM.Product);
+            TempData["success"] = "Product created successfully";
         }
 
-
-        return View();
+        _unitOfWork.Save();
+        return RedirectToAction("Index", "Product");
     }
 
     public IActionResult Delete(int? id)

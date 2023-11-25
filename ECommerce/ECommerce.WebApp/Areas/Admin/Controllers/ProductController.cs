@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ECommerce.WebApp.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class ProductController(IUnitOfWork unitOfWork) : Controller
+public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : Controller
 {
     readonly IUnitOfWork _unitOfWork = unitOfWork;
+    readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
     public IActionResult Index()
     {
@@ -56,6 +57,15 @@ public class ProductController(IUnitOfWork unitOfWork) : Controller
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string path = Path.Combine("images", "product", fileName);
+                    using var fileStream = new FileStream(Path.Combine(_webHostEnvironment.WebRootPath, path), FileMode.Create);
+                    file.CopyTo(fileStream);
+                    productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
+                }
+
                 _unitOfWork.Product.Update(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
@@ -66,6 +76,15 @@ public class ProductController(IUnitOfWork unitOfWork) : Controller
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string path = Path.Combine("images", "product", fileName);
+                    using var fileStream = new FileStream(Path.Combine(_webHostEnvironment.WebRootPath, path), FileMode.Create);
+                    file.CopyTo(fileStream);
+                   productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
+                }
+
                 _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";

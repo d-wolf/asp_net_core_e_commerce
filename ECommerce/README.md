@@ -25,15 +25,11 @@ In VSCode .sln will be created automatically on run. It can be disabled by setti
 
 ## Scaffold Identity in ASP.NET Core
 * introduction see [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-8.0&tabs=netcore-cli)
-* `dotnet aspnet-codegenerator identity -h`
-* `dotnet aspnet-codegenerator identity --dbContext ECommerce.DataAccess.Data --databaseProvider 'postgres' --bootstrapVersion 5 --useDefaultUI`
-* `dotnet aspnet-codegenerator identity --dbContext ECommerce.DataAccess.Data --useDefaultUI`
 * `dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version 8.0.0`
 * `dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.0`
 * `dotnet add package Microsoft.AspNetCore.Identity.UI --version 8.0.0`
-
-
-  at Microsoft.VisualStudio.Web.CodeGeneration.ActionInvoker.<BuildCommandLine>b__6_0()
-   at Microsoft.Extensions.CommandLineUtils.CommandLineApplication.Execute(String[] args)
-   at Microsoft.VisualStudio.Web.CodeGeneration.ActionInvoker.Execute(String[] args)
-   at Microsoft.VisualStudio.Web.CodeGeneration.CodeGenCommand.Execute(String[] args)
+* `dotnet aspnet-codegenerator identity -h`
+* `dotnet aspnet-codegenerator identity --dbContext ECommerce.DataAccess.Data.ApplicationDbContext --files <pages>`
+* pages can be added separated by ';'
+* you can list all the options separated by ';' with `dotnet aspnet-codegenerator identity --listFiles | tr '\n' ';' >> identity_pages.txt`
+* you might need to revert the overwrite 'appsettings.json' (db connection string) and the newly added 'ApplicationDbContext' (if you already had one)

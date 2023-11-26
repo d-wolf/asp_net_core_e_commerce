@@ -67,7 +67,9 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
             }
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             string path = Path.Combine("images", "product", fileName);
-            using var fileStream = new FileStream(Path.Combine(_webHostEnvironment.WebRootPath, path), FileMode.Create);
+            string wwwwrootpath = Path.Combine(_webHostEnvironment.WebRootPath, path);
+            new FileInfo(wwwwrootpath).Directory?.Create(); 
+            using var fileStream = new FileStream(wwwwrootpath, FileMode.Create);
             file.CopyTo(fileStream);
             productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
         }

@@ -37,6 +37,13 @@ To make migrations work in multi project solution go through [this guide](https:
 * login `sudo -u postgres psql`
 * change password for username postgres with `ALTER USER postgres with encrypted password 'postgres';`
 * create db `CREATE DATABASE ecommerce OWNER postgres;`
+* `sudo -u postgres psql`
+* `\i /var/www/ecommerce/script.sql`
+
+#### Miragtion
+* create migration scrip `dotnet ef migrations script FromA FromB -o script.sql` or `dotnet ef migrations script -o script.sql`
+* copy the file to the server `scp -r script.sql username@remotecomputer:/var/www/ecommerce`
+* run the script `psql -U postgres -d ecommerce -a -f script.sql`
 
 #### Install & Configure Nginx
 * (the following steps will all be on the server side)
@@ -73,10 +80,10 @@ server {
 * reload nginx with `sudo nginx -s reload` to apply the changes
 
 #### Test the site
-* run `dotnet /var/www/ecommerce/ECommerce.dll` on the server
+* run `dotnet /var/www/ecommerce/ECommerce.WebApp.dll` on the server
 * when we open the browser and navigate to the server ip the startpage of the site should be shown
 
 #### Setup service
 * ssh to server and run `chown -R www-data:www-data /var/www`
-* run `scp -r ecommerce-app.service username@remotecomputer:/etc/systemd/system` on the local machine in project directory
+* run `scp -r ecommerce-app username@remotecomputer:/etc/systemd/system` on the local machine in project directory
 * run `systemctl enable ecommerce-app.service` on server to enable the service

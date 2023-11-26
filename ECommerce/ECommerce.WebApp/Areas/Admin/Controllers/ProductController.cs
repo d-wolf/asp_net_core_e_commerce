@@ -28,8 +28,8 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
                 Product = product,
                 CategoryList = _unitOfWork.Category.GetAll().Select(x => new SelectListItem
                 {
-                    Text = x.Name,
                     Value = x.Id.ToString(),
+                    Text = x.Name,
                 }),
             });
         }

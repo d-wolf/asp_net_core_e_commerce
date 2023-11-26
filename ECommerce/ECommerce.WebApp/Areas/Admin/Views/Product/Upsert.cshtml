@@ -67,12 +67,12 @@
                     <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-4">
-                    <label asp-for="Product.Category" class="pb-2"></label>
-                    <select asp-for="Product.Category" asp-items="@Model.CategoryList" class="form-select"
+                    <label asp-for="Product.CategoryId" class="pb-2"></label>
+                    <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select"
                         aria-label="Default select example">
                         <option disabled selected>-- Select Category --</option>
                     </select>
-                    <span asp-validation-for="Product.Category" class="text-danger"></span>
+                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                 </div>
                 <div class="row mt-4">
                     <div class="col-6 col-md-3">

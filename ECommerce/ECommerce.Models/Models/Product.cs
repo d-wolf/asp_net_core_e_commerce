@@ -46,6 +46,7 @@ public class Product
     public string? ImageUrl { get; set; }
 
     [ForeignKey("Category")]
+    [DisplayName("Category")]
     public int? CategoryId { get; set; }
 
     [ValidateNever]

@@ -16,7 +16,8 @@
                 <div class="py-3">
                     <div class="row">
                         <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                            <a asp-controller="Home" asp-action="Index"
+                                class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
                                 <small>Back to home</small>
                             </a>
                         </div>
@@ -28,7 +29,7 @@
                         <div class="col-12 col-lg-6 offset-lg-1">
 
                             <div class="col-12 col-md-6 pb-4">
-                                <span class="badge">@Model.Category</span>
+                                <span class="badge bg-secondary">@Model.Category?.Name</span>
                             </div>
                             <div class="row ps-2">
                                 <h6 class="text-dark text-opacity-50 ">ISBN: @Model.ISBN</h6>
@@ -59,17 +60,17 @@
                                     <div>Price</div>
                                 </div>
                                 <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                    <div>Price</div>
+                                    <div>@Model.Price.ToString("c")</div>
                                 </div>
                                 <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                    <div>Price50</div>
+                                    <div>@Model.Price50.ToString("c")</div>
                                 </div>
                                 <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                    <div>Price100</div>
+                                    <div>@Model.Price100.ToString("c")</div>
                                 </div>
                             </div>
                             <div class="row pl-2 my-3">
-                                <p class="text-secondary lh-sm">@Model.Description</p>
+                                <p class="text-secondary lh-sm">@Html.Raw(Model.Description)</p>
                             </div>
                             <div class="row pl-2 mb-3">
                                 <div class="col-md-4">

@@ -1,5 +1,4 @@
 using ECommerce.DataAccess.Repository.IRepository;
-using ECommerce.Models.Models;
 using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

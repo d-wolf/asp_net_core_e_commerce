@@ -38,6 +38,7 @@ To make migrations work in multi project solution go through [this guide](https:
 * change password for username postgres with `ALTER USER postgres with encrypted password 'postgres';`
 * create db `CREATE DATABASE ecommerce OWNER postgres;`
 * `sudo -u postgres psql`
+* `\c ecommerce;`
 * `\i /var/www/ecommerce/script.sql`
 
 #### Miragtion

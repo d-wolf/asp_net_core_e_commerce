@@ -22,3 +22,8 @@ In VSCode .sln will be created automatically on run. It can be disabled by setti
 * add `export PATH="$PATH":"$HOME/.dotnet/tools"` to your `.zshrc`
 * `dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version <VERSION>`
 * `dotnet-aspnet-codegenerator area <AREA_NAME>`
+
+## Scaffold Identity in ASP.NET Core
+* introduction see [here](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-8.0&tabs=netcore-cli)
+* `dotnet aspnet-codegenerator identity -h`
+* `dotnet aspnet-codegenerator identity --dbContext ../ECommerce.DataAccess.Data --databaseProvider postgres --bootstrapVersion 5`

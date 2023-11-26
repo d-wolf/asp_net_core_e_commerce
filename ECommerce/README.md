@@ -32,4 +32,4 @@ In VSCode .sln will be created automatically on run. It can be disabled by setti
 * `dotnet aspnet-codegenerator identity --dbContext ECommerce.DataAccess.Data.ApplicationDbContext --files <pages>`
 * pages can be added separated by ';'
 * you can list all the options separated by ';' with `dotnet aspnet-codegenerator identity --listFiles | tr '\n' ';' >> identity_pages.txt`
-* you might need to revert the overwrite 'appsettings.json' (db connection string) and the newly added 'ApplicationDbContext' (if you already had one)
+* you might need to revert the overwritten 'appsettings.json' (db connection string) and to remove the newly added 'ApplicationDbContext'

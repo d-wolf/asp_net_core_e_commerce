@@ -13,8 +13,24 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     public IActionResult Index()
     {
-        var productsIncludeCategory = _unitOfWork.Product.GetAll("Category");
-        return View(productsIncludeCategory);
+        var productsIncludesCategory = _unitOfWork.Product.GetAll("Category");
+        return View(productsIncludesCategory);
+    }
+
+    public IActionResult Details(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return BadRequest();
+        }
+
+        var productIncludesCategory = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, "Category");
+        if (productIncludesCategory == null)
+        {
+            return NotFound();
+        }
+        
+        return View(productIncludesCategory);
     }
 
     public IActionResult Privacy()

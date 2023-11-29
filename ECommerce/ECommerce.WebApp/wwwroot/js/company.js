@@ -8,11 +8,12 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/company/getall' },
         "columns": [
-            { data: 'title', "width": "25%" },
-            { data: 'isbn', "width": "15%" },
-            { data: 'listPrice', "width": "10%" },
-            { data: 'author', "width": "15%" },
-            { data: 'category.name', "width": "10%" },
+            { data: 'name', "width": "15%" },
+            { data: 'streetAddress', "width": "15%" },
+            { data: 'city', "width": "15%" },
+            { data: 'state', "width": "10%" },
+            { data: 'postalCode', "width": "10%" },
+            { data: 'phoneNumber', "width": "10%" },
             {
                 data: 'id',
                 "render": function (data) {

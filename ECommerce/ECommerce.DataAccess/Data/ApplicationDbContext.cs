@@ -8,7 +8,8 @@ public class ApplicationDbContext : IdentityDbContext
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<ApplicationUser> applicationUsers { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<Company> Companies { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -36,6 +37,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 90,
                     Price50 = 85,
                     Price100 = 80,
+                    ImageUrl = "",
                 },
                 new Product
                 {
@@ -47,7 +49,8 @@ public class ApplicationDbContext : IdentityDbContext
                     ListPrice = 40,
                     Price = 30,
                     Price50 = 25,
-                    Price100 = 20
+                    Price100 = 20,
+                    ImageUrl = "",
                 },
                 new Product
                 {
@@ -59,7 +62,8 @@ public class ApplicationDbContext : IdentityDbContext
                     ListPrice = 55,
                     Price = 50,
                     Price50 = 40,
-                    Price100 = 35
+                    Price100 = 35,
+                    ImageUrl = "",
                 },
                 new Product
                 {
@@ -71,7 +75,8 @@ public class ApplicationDbContext : IdentityDbContext
                     ListPrice = 70,
                     Price = 65,
                     Price50 = 60,
-                    Price100 = 55
+                    Price100 = 55,
+                    ImageUrl = "",
                 },
                 new Product
                 {
@@ -83,7 +88,8 @@ public class ApplicationDbContext : IdentityDbContext
                     ListPrice = 30,
                     Price = 27,
                     Price50 = 25,
-                    Price100 = 20
+                    Price100 = 20,
+                    ImageUrl = "",
                 },
                 new Product
                 {
@@ -95,7 +101,8 @@ public class ApplicationDbContext : IdentityDbContext
                     ListPrice = 25,
                     Price = 23,
                     Price50 = 22,
-                    Price100 = 20
+                    Price100 = 20,
+                    ImageUrl = "",
                 }
        );
     }

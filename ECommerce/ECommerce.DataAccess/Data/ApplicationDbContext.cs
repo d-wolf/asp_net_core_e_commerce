@@ -25,6 +25,29 @@ public class ApplicationDbContext : IdentityDbContext
          new Category() { Id = 3, Name = "History", DisplayOrder = 3 }
         );
 
+        modelBuilder.Entity<Company>().HasData(
+             new Company()
+             {
+                 Id = 1,
+                 Name = "Tech Solutions GmbH",
+                 City = "Berlin",
+                 PhoneNumber = "",
+                 PostalCode = "10247",
+                 State = "Berlin",
+                 StreetAddress = "Muster Str. 22",
+             },
+              new Company()
+              {
+                  Id = 2,
+                  Name = "XY GmbH",
+                  City = "Leipzig",
+                  PhoneNumber = "",
+                  PostalCode = "04109",
+                  State = "Saxony",
+                  StreetAddress = "Muster Str. 1",
+              }
+            );
+
         modelBuilder.Entity<Product>().HasData(
                 new Product
                 {

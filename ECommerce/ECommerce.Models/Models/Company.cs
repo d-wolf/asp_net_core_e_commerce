@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime;
 
 namespace ECommerce.Models.Models;
 
@@ -11,7 +10,7 @@ public class Company
 
     [Required]
     [DisplayName("Name")]
-    public required string Name { get; set; }
+    public string? Name { get; set; }
 
     [DisplayName("Street")]
     public string? StreetAddress { get; set; } 

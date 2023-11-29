@@ -55,8 +55,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
     [HttpPost]
     public IActionResult Upsert(ProductVM productVM, IFormFile? file)
     {
-        if (!ModelState.IsValid) return View();
-
+        if (!ModelState.IsValid) return View(productVM);
 
         if (file != null)
         {

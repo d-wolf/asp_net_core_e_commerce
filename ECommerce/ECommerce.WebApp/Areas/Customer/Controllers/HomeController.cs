@@ -15,7 +15,7 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     public IActionResult Index()
     {
-        var productsIncludesCategory = _unitOfWork.Product.GetAll("Category");
+        var productsIncludesCategory = _unitOfWork.Product.GetAll(includeProperties: "Category");
         return View(productsIncludesCategory);
     }
 

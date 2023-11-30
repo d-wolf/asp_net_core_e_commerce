@@ -15,14 +15,16 @@ namespace ECommerce.DataAccess.Repository
             _context.Set<T>().Add(entity);
         }
 
-        public IEnumerable<T> GetAll(params string[] includeProperties)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, params string[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             foreach (var item in includeProperties)
             {
                 query = query.Include(item);
             }
-            return query.AsNoTracking();
+
+
+            return query.AsNoTracking().Where(filter ?? (_ => true));
         }
 
         public T? GetFirstOrDefault(Expression<Func<T, bool>> filter, params string[] includeProperties)

@@ -4,18 +4,58 @@ using ECommerce.Models.Models;
 using ECommerce.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using ECommerce.Models.ViewModels;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
 [Area("Customer")]
+[Authorize]
 public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller
 {
     private readonly ILogger<HomeController> _logger = logger;
-    readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+
 
     public IActionResult Index()
     {
-        var cart = _unitOfWork.ShoppingCart.GetAll("Category");
-        return View(cart);
+        var claimsEntity = User.Identity as ClaimsIdentity;
+        var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        var shoppingCartVM = new ShoppingCartVM()
+        {
+            OrderTotal = 0,
+            ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)),
+        };
+
+        foreach (var cart in shoppingCartVM.ShoppingCartList)
+        {
+            cart.Price = GetPriceBasedQuantity(cart);
+            shoppingCartVM.OrderTotal += cart.Price * cart.Count;
+        }
+
+        return View(shoppingCartVM);
+    }
+
+    private static double GetPriceBasedQuantity(ShoppingCart shoppingCart)
+    {
+        if (shoppingCart.Product == null) return 0.0;
+
+        if (shoppingCart.Count <= 50)
+        {
+            return shoppingCart.Product.Price;
+        }
+        else if (shoppingCart.Count <= 100)
+        {
+            return shoppingCart.Product.Price50;
+        }
+
+        return shoppingCart.Product.Price100;
     }
 }

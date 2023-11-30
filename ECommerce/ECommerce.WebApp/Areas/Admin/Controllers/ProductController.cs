@@ -16,7 +16,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
 
     public IActionResult Index()
     {
-        var productList = _unitOfWork.Product.GetAll("Category").ToList();
+        var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
         return View(productList);
     }
 
@@ -96,7 +96,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
     [HttpGet]
     public IActionResult GetAll()
     {
-        var productList = _unitOfWork.Product.GetAll("Category").ToList();
+        var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
         return Json(new { data = productList });
     }
 

@@ -2,10 +2,12 @@ namespace ECommerce.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
-        ICategoryRepository Category { get; }
-        IProductRepository Product { get; }
-        ICompanyRepository Company { get; }
-        
+        public ICategoryRepository Category { get; }
+        public IProductRepository Product { get; }
+        public ICompanyRepository Company { get; }
+        public IShoppingCartRepository ShoppingCart { get; }
+        public IApplicationUserRepository ApplicationUser { get; }
+
         void Save();
     }
 }

@@ -2,6 +2,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.Models.Models;
 using ECommerce.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
@@ -29,8 +31,45 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         {
             return NotFound();
         }
-        
-        return View(productIncludesCategory);
+
+        return View(new ShoppingCart
+        {
+            Product = productIncludesCategory,
+            ProductId = id,
+            Count = 1,
+        });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public IActionResult Details(ShoppingCart shoppingCart)
+    {
+        var claimsEntity = User.Identity as ClaimsIdentity;
+        var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        shoppingCart.ApplicationUserId = userId;
+
+        var cartForUserAndProduct = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.ApplicationUserId == userId && x.ProductId == shoppingCart.ProductId);
+
+        if (cartForUserAndProduct != null)
+        {
+            cartForUserAndProduct.Count += shoppingCart.Count;
+            _unitOfWork.ShoppingCart.Update(cartForUserAndProduct);
+            TempData["success"] = "Cart updated successfully";
+        }
+        else
+        {
+            _unitOfWork.ShoppingCart.Add(shoppingCart);
+
+        }
+
+        _unitOfWork.Save();
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Privacy()

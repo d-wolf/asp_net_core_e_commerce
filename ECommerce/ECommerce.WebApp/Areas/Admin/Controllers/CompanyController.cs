@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ECommerce.WebApp.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[Authorize(Roles = SD.Role_Admin)]
+[Authorize(Roles = SD.RoleAdmin)]
 public class CompanyController(IUnitOfWork unitOfWork) : Controller
 {
     readonly IUnitOfWork _unitOfWork = unitOfWork;

@@ -31,12 +31,23 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         var shoppingCartVM = new ShoppingCartVM()
         {
             OrderTotal = 0,
-            ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)),
+            ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
+                 new ShoppingCart
+                 {
+                     ApplicationUserId = x.ApplicationUserId,
+                     ApplicationUser = x.ApplicationUser,
+                     Count = x.Count,
+                     Price = GetPriceBasedQuantity(x),
+                     Product = x.Product,
+                     Id = x.Id,
+                     ProductId = x.ProductId,
+                 }
+            ),
         };
+
 
         foreach (var cart in shoppingCartVM.ShoppingCartList)
         {
-            cart.Price = GetPriceBasedQuantity(cart);
             shoppingCartVM.OrderTotal += cart.Price * cart.Count;
         }
 

@@ -134,9 +134,9 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
         {
             #region dirty
             // TODO: DIRTY!
-            if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
+            if (!_roleManager.RoleExistsAsync(SD.RoleCustomer).GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.RoleCustomer)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.RoleEmployee)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.RoleCompany)).GetAwaiter().GetResult();
@@ -196,7 +196,7 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                        await _userManager.AddToRoleAsync(user, SD.RoleCustomer);
                     }
                     #endregion
 

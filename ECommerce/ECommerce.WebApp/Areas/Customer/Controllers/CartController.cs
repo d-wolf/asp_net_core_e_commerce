@@ -106,30 +106,28 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
                    return x;
                });
 
-        shoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
+        shoppingCartVM.OrderHeader.OrderDate = DateTime.UtcNow;
         shoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
-        var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
-        if (user == null)
+        var applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
+        if (applicationUser == null)
         {
             return NotFound();
         }
 
-        shoppingCartVM.OrderHeader.PhoneNumber = user.PhoneNumber;
-        shoppingCartVM.OrderHeader.City = user.City;
-        shoppingCartVM.OrderHeader.Name = user.Name;
-        shoppingCartVM.OrderHeader.StreetAddress = user.StreetAddress;
-        shoppingCartVM.OrderHeader.PostalCode = user.PostalCode;
-        shoppingCartVM.OrderHeader.State = user.State;
+        shoppingCartVM.OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
+        shoppingCartVM.OrderHeader.City = applicationUser.City;
+        shoppingCartVM.OrderHeader.Name = applicationUser.Name;
+        shoppingCartVM.OrderHeader.StreetAddress = applicationUser.StreetAddress;
+        shoppingCartVM.OrderHeader.PostalCode = applicationUser.PostalCode;
+        shoppingCartVM.OrderHeader.State = applicationUser.State;
 
         foreach (var cart in shoppingCartVM.ShoppingCartList)
         {
             shoppingCartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
         }
 
-
-
-        if (shoppingCartVM.OrderHeader.ApplicationUser?.CompanyId.GetValueOrDefault() == 0)
+        if (applicationUser.CompanyId.GetValueOrDefault() == 0)
         {
             // regular customer account
             shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
@@ -143,9 +141,36 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         }
 
         _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
+        // we need to save here becasue of foreign key violation
+        _unitOfWork.Save();
+        foreach (var cart in shoppingCartVM.ShoppingCartList)
+        {
+            var detail = new OrderDetail
+            {
+                ProductId = cart.ProductId,
+                OrderHeaderId = shoppingCartVM.OrderHeader.Id,
+                Price = cart.Price,
+                Count = cart.Count,
+            };
+            _unitOfWork.OrderDetail.Add(detail);
+        }
+
         _unitOfWork.Save();
 
-        return View(shoppingCartVM);
+        if(applicationUser.CompanyId.GetValueOrDefault() == 0){
+            // regular customer
+            // stripe logic here
+        }
+
+        return RedirectToAction(nameof(OrderConfirmation), new
+        {
+            id = shoppingCartVM.OrderHeader.Id,
+        });
+    }
+
+    public IActionResult OrderConfirmation(int? id)
+    {
+        return View(id);
     }
 
     private static double GetPriceBasedQuantity(ShoppingCart shoppingCart)

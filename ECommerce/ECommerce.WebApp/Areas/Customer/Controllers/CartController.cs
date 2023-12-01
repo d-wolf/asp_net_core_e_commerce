@@ -16,8 +16,6 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-
-
     public IActionResult Index()
     {
         var claimsEntity = User.Identity as ClaimsIdentity;
@@ -52,6 +50,11 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         }
 
         return View(shoppingCartVM);
+    }
+
+     public IActionResult Summary()
+    {
+        return View();
     }
 
     private static double GetPriceBasedQuantity(ShoppingCart shoppingCart)

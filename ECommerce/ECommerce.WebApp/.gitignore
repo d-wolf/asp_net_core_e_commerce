@@ -43,4 +43,4 @@ msbuild.err
 msbuild.wrn
 
 # Uploaded Content
-wwwroot/images/*
+wwwroot/images/product/*

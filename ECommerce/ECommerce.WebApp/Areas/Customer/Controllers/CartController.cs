@@ -5,6 +5,7 @@ using ECommerce.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ECommerce.Models.ViewModels;
+using ECommerce.Utility;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
@@ -83,6 +84,66 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         {
             shoppingCartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
         }
+
+        return View(shoppingCartVM);
+    }
+
+    [HttpPost]
+    [ActionName("Summary")]
+    public IActionResult SummaryPOST(ShoppingCartVM shoppingCartVM)
+    {
+        var claimsEntity = User.Identity as ClaimsIdentity;
+        var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        shoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
+               {
+                   x.Price = GetPriceBasedQuantity(x);
+                   return x;
+               });
+
+        shoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
+        shoppingCartVM.OrderHeader.ApplicationUserId = userId;
+
+        var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        shoppingCartVM.OrderHeader.PhoneNumber = user.PhoneNumber;
+        shoppingCartVM.OrderHeader.City = user.City;
+        shoppingCartVM.OrderHeader.Name = user.Name;
+        shoppingCartVM.OrderHeader.StreetAddress = user.StreetAddress;
+        shoppingCartVM.OrderHeader.PostalCode = user.PostalCode;
+        shoppingCartVM.OrderHeader.State = user.State;
+
+        foreach (var cart in shoppingCartVM.ShoppingCartList)
+        {
+            shoppingCartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
+        }
+
+
+
+        if (shoppingCartVM.OrderHeader.ApplicationUser?.CompanyId.GetValueOrDefault() == 0)
+        {
+            // regular customer account
+            shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            shoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+        }
+        else
+        {
+            // it's a company user
+            shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
+            shoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+        }
+
+        _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
+        _unitOfWork.Save();
 
         return View(shoppingCartVM);
     }

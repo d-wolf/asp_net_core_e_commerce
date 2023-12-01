@@ -9,5 +9,6 @@ namespace ECommerce.Models.ViewModels;
 public class ShoppingCartVM
 {
     public required double OrderTotal { get; set; }
+    public required OrderHeader OrderHeader { get; set; }
     public required IEnumerable<ShoppingCart> ShoppingCartList { get; set; }
 }

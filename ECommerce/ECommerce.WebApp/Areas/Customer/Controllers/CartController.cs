@@ -72,14 +72,6 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     public IActionResult Plus(int? id)
     {
-        var claimsEntity = User.Identity as ClaimsIdentity;
-        var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (userId == null)
-        {
-            return Unauthorized();
-        }
-
         var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.Id == id, nameof(Product));
         if (cart == null)
         {
@@ -89,7 +81,39 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         cart!.Count += 1;
         _unitOfWork.ShoppingCart.Update(cart);
         _unitOfWork.Save();
-        
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult Minus(int? id)
+    {
+        var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.Id == id, nameof(Product));
+        if (cart == null)
+        {
+            return NotFound();
+        }
+
+        if (cart.Count > 1)
+        {
+            cart!.Count -= 1;
+            _unitOfWork.ShoppingCart.Update(cart);
+            _unitOfWork.Save();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult Remove(int? id)
+    {
+        var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.Id == id, nameof(Product));
+        if (cart == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.ShoppingCart.Remove(cart);
+        _unitOfWork.Save();
+
         return RedirectToAction(nameof(Index));
     }
 }

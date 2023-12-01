@@ -69,4 +69,27 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
         return shoppingCart.Product.Price100;
     }
+
+    public IActionResult Plus(int? id)
+    {
+        var claimsEntity = User.Identity as ClaimsIdentity;
+        var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.Id == id, nameof(Product));
+        if (cart == null)
+        {
+            return NotFound();
+        }
+
+        cart!.Count += 1;
+        _unitOfWork.ShoppingCart.Update(cart);
+        _unitOfWork.Save();
+        
+        return RedirectToAction(nameof(Index));
+    }
 }

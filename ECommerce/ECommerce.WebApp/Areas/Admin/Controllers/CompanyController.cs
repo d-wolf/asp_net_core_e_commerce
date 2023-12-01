@@ -50,7 +50,7 @@ public class CompanyController(IUnitOfWork unitOfWork) : Controller
         }
 
         _unitOfWork.Save();
-        return RedirectToAction("Index", "Company");
+        return RedirectToAction(nameof(Index), nameof(Company));
     }
 
     #region API Calls

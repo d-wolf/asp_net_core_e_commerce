@@ -15,7 +15,7 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     public IActionResult Index()
     {
-        var productsIncludesCategory = _unitOfWork.Product.GetAll(includeProperties: "Category");
+        var productsIncludesCategory = _unitOfWork.Product.GetAll(includeProperties: nameof(Category));
         return View(productsIncludesCategory);
     }
 
@@ -26,7 +26,7 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return BadRequest();
         }
 
-        var productIncludesCategory = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, "Category");
+        var productIncludesCategory = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, nameof(Category));
         if (productIncludesCategory == null)
         {
             return NotFound();

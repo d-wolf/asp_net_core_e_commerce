@@ -31,7 +31,7 @@ public class CategoryController(IUnitOfWork unitOfWork) : Controller
             _unitOfWork.Category.Add(category);
             _unitOfWork.Save();
             TempData["success"] = "Category created successfully";
-            return RedirectToAction("Index", "Category");
+            return RedirectToAction(nameof(Index), nameof(Category));
         }
 
         return View();
@@ -62,7 +62,7 @@ public class CategoryController(IUnitOfWork unitOfWork) : Controller
             _unitOfWork.Category.Update(category);
             _unitOfWork.Save();
             TempData["success"] = "Category updated successfully";
-            return RedirectToAction("Index", "Category");
+            return RedirectToAction(nameof(Index), nameof(Category));
         }
 
         return View();
@@ -97,6 +97,6 @@ public class CategoryController(IUnitOfWork unitOfWork) : Controller
         _unitOfWork.Category.Remove(category);
         _unitOfWork.Save();
         TempData["success"] = "Category deleted successfully";
-        return RedirectToAction("Index", "Category");
+        return RedirectToAction(nameof(Index), nameof(Category));
     }
 }

@@ -1,4 +1,5 @@
 using ECommerce.DataAccess.Repository.IRepository;
+using ECommerce.Models.Models;
 using ECommerce.Models.ViewModels;
 using ECommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
 
     public IActionResult Index()
     {
-        var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+        var productList = _unitOfWork.Product.GetAll(includeProperties: nameof(Category)).ToList();
         return View(productList);
     }
 
@@ -88,7 +89,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
         }
 
         _unitOfWork.Save();
-        return RedirectToAction("Index", "Product");
+        return RedirectToAction(nameof(Index), nameof(Product));
     }
 
     #region API Calls
@@ -96,7 +97,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
     [HttpGet]
     public IActionResult GetAll()
     {
-        var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+        var productList = _unitOfWork.Product.GetAll(includeProperties: nameof(Category)).ToList();
         return Json(new { data = productList });
     }
 

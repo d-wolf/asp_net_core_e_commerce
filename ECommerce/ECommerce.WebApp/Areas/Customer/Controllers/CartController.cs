@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ECommerce.Models.ViewModels;
 using ECommerce.Utility;
+using Stripe.Checkout;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
@@ -157,9 +158,43 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
         _unitOfWork.Save();
 
-        if(applicationUser.CompanyId.GetValueOrDefault() == 0){
-            // regular customer
-            // stripe logic here
+        if (applicationUser.CompanyId.GetValueOrDefault() == 0)
+        {
+            List<SessionLineItemOptions> lineItems = [];
+
+            foreach (var item in shoppingCartVM.ShoppingCartList)
+            {
+                lineItems.Add(new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(item.Price * 100), // $20.50 -> 2050
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.Product!.Title
+                        }
+                    },
+                    Quantity = item.Count
+                });
+            }
+
+            // TODO: DIRTY!
+            var domain = "http://localhost:5062/";
+            var options = new SessionCreateOptions
+            {
+                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={shoppingCartVM.OrderHeader.Id}",
+                CancelUrl = domain + "customer/cart/index",
+                LineItems = lineItems,
+                Mode = "payment",
+            };
+
+            var service = new SessionService();
+            var session = service.Create(options);
+            _unitOfWork.OrderHeader.UpdatePaymentId(shoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+            _unitOfWork.Save();
+            Response.Headers.Append("Location", session.Url);
+            return new StatusCodeResult(303);
         }
 
         return RedirectToAction(nameof(OrderConfirmation), new
@@ -170,6 +205,28 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     public IActionResult OrderConfirmation(int? id)
     {
+        var orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == id, includeProperties: nameof(ApplicationUser));
+        if (orderHeader == null)
+        {
+            return NotFound();
+        }
+
+        if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
+        {
+            var service = new SessionService();
+            var session = service.Get(orderHeader.SessionId);
+            if (session.PaymentStatus.Equals("paid", StringComparison.CurrentCultureIgnoreCase))
+            {
+                _unitOfWork.OrderHeader.UpdatePaymentId(orderHeader.Id, session.Id, session.PaymentIntentId);
+                _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusApproved, SD.PaymentStatusApproved);
+                _unitOfWork.Save();
+            }
+        }
+
+        var shoppingCarts = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == orderHeader.ApplicationUserId);
+        _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+        _unitOfWork.Save();
+
         return View(id);
     }
 

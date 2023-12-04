@@ -4,6 +4,7 @@ using ECommerce.Models.Models;
 using ECommerce.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using ECommerce.Utility;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
@@ -60,15 +61,17 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         {
             cartForUserAndProduct.Count += shoppingCart.Count;
             _unitOfWork.ShoppingCart.Update(cartForUserAndProduct);
+            _unitOfWork.Save();
             TempData["success"] = "Cart updated successfully";
         }
         else
         {
             _unitOfWork.ShoppingCart.Add(shoppingCart);
-
+            _unitOfWork.Save();
+            var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.ApplicationUserId == userId);
+            HttpContext.Session.SetInt32(SD.SessionCart, cart?.Count ?? 0);
         }
 
-        _unitOfWork.Save();
         return RedirectToAction(nameof(Index));
     }
 

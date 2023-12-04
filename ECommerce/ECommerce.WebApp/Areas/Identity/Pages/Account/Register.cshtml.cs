@@ -132,16 +132,6 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            #region dirty
-            // TODO: DIRTY!
-            if (!_roleManager.RoleExistsAsync(SD.RoleCustomer).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.RoleCustomer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.RoleEmployee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.RoleCompany)).GetAwaiter().GetResult();
-            }
-
             Input = new()
             {
                 RoleList = _roleManager.Roles.Select(x => x.Name).Select(x => new SelectListItem
@@ -149,13 +139,12 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
                     Text = x,
                     Value = x,
                 }),
-                 CompanyList = _unitOfWork.Company.GetAll().Select(x => new SelectListItem
+                CompanyList = _unitOfWork.Company.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString(),
                 })
             };
-            #endregion
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -178,7 +167,8 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                if(Input.Role == SD.RoleCompany){
+                if (Input.Role == SD.RoleCompany)
+                {
                     user.CompanyId = Input.CompanyId;
                 }
 
@@ -218,7 +208,15 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(SD.RoleAdmin))
+                        {
+                            TempData["success"] = "User created successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
+
                         return LocalRedirect(returnUrl);
                     }
                 }

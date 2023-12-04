@@ -220,6 +220,8 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusApproved, SD.PaymentStatusApproved);
                 _unitOfWork.Save();
             }
+            
+            HttpContext.Session.Clear();
         }
 
         var shoppingCarts = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == orderHeader.ApplicationUserId);

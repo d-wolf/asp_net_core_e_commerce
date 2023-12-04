@@ -18,7 +18,7 @@ public class DbInitializer(UserManager<IdentityUser> userManager, RoleManager<Id
         // Apply any pending migration
         try
         {
-            if (_context.Database.GetPendingMigrations().Count() > 0)
+            if (_context.Database.GetPendingMigrations().Any())
             {
                 _context.Database.Migrate();
             }

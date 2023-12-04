@@ -27,7 +27,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return Unauthorized();
         }
 
-        var shoppingCartVM = new ShoppingCartVM()
+        var shoppingCartVM = new ShoppingCartsVM()
         {
             OrderHeader = new(),
             ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
@@ -56,7 +56,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return Unauthorized();
         }
 
-        var shoppingCartVM = new ShoppingCartVM()
+        var shoppingCartVM = new ShoppingCartsVM()
         {
             OrderHeader = new(),
             ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
@@ -90,7 +90,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     [HttpPost]
     [ActionName("Summary")]
-    public IActionResult SummaryPOST(ShoppingCartVM shoppingCartVM)
+    public IActionResult SummaryPOST(ShoppingCartsVM shoppingCartsVM)
     {
         var claimsEntity = User.Identity as ClaimsIdentity;
         var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -100,14 +100,14 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return Unauthorized();
         }
 
-        shoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
+        shoppingCartsVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
                {
                    x.Price = GetPriceBasedQuantity(x);
                    return x;
                });
 
-        shoppingCartVM.OrderHeader.OrderDate = DateTime.UtcNow;
-        shoppingCartVM.OrderHeader.ApplicationUserId = userId;
+        shoppingCartsVM.OrderHeader.OrderDate = DateTime.UtcNow;
+        shoppingCartsVM.OrderHeader.ApplicationUserId = userId;
 
         var applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
         if (applicationUser == null)
@@ -115,40 +115,40 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return NotFound();
         }
 
-        shoppingCartVM.OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
-        shoppingCartVM.OrderHeader.City = applicationUser.City;
-        shoppingCartVM.OrderHeader.Name = applicationUser.Name;
-        shoppingCartVM.OrderHeader.StreetAddress = applicationUser.StreetAddress;
-        shoppingCartVM.OrderHeader.PostalCode = applicationUser.PostalCode;
-        shoppingCartVM.OrderHeader.State = applicationUser.State;
+        shoppingCartsVM.OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
+        shoppingCartsVM.OrderHeader.City = applicationUser.City;
+        shoppingCartsVM.OrderHeader.Name = applicationUser.Name;
+        shoppingCartsVM.OrderHeader.StreetAddress = applicationUser.StreetAddress;
+        shoppingCartsVM.OrderHeader.PostalCode = applicationUser.PostalCode;
+        shoppingCartsVM.OrderHeader.State = applicationUser.State;
 
-        foreach (var cart in shoppingCartVM.ShoppingCartList)
+        foreach (var cart in shoppingCartsVM.ShoppingCartList)
         {
-            shoppingCartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
+            shoppingCartsVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
         }
 
         if (applicationUser.CompanyId.GetValueOrDefault() == 0)
         {
             // regular customer account
-            shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-            shoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+            shoppingCartsVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            shoppingCartsVM.OrderHeader.OrderStatus = SD.StatusPending;
         }
         else
         {
             // it's a company user
-            shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
-            shoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+            shoppingCartsVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
+            shoppingCartsVM.OrderHeader.OrderStatus = SD.StatusApproved;
         }
 
-        _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
+        _unitOfWork.OrderHeader.Add(shoppingCartsVM.OrderHeader);
         // we need to save here becasue of foreign key violation
         _unitOfWork.Save();
-        foreach (var cart in shoppingCartVM.ShoppingCartList)
+        foreach (var cart in shoppingCartsVM.ShoppingCartList)
         {
             var detail = new OrderDetail
             {
                 ProductId = cart.ProductId,
-                OrderHeaderId = shoppingCartVM.OrderHeader.Id,
+                OrderHeaderId = shoppingCartsVM.OrderHeader.Id,
                 Price = cart.Price,
                 Count = cart.Count,
             };
@@ -161,7 +161,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         {
             List<SessionLineItemOptions> lineItems = [];
 
-            foreach (var item in shoppingCartVM.ShoppingCartList)
+            foreach (var item in shoppingCartsVM.ShoppingCartList)
             {
                 lineItems.Add(new SessionLineItemOptions
                 {
@@ -182,7 +182,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             var domain = "http://localhost:5062/";
             var options = new SessionCreateOptions
             {
-                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={shoppingCartVM.OrderHeader.Id}",
+                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={shoppingCartsVM.OrderHeader.Id}",
                 CancelUrl = domain + "customer/cart/index",
                 LineItems = lineItems,
                 Mode = "payment",
@@ -190,7 +190,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
             var service = new SessionService();
             var session = service.Create(options);
-            _unitOfWork.OrderHeader.UpdatePaymentId(shoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+            _unitOfWork.OrderHeader.UpdatePaymentId(shoppingCartsVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
             _unitOfWork.Save();
             Response.Headers.Append("Location", session.Url);
             return new StatusCodeResult(303);
@@ -198,7 +198,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
         return RedirectToAction(nameof(OrderConfirmation), new
         {
-            id = shoppingCartVM.OrderHeader.Id,
+            id = shoppingCartsVM.OrderHeader.Id,
         });
     }
 

@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ECommerce.Models.Models;
 using ECommerce.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ECommerce.Utility;
+using ECommerce.Models.Models;
+using ECommerce.Models.ViewModels;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
@@ -41,17 +42,20 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return NotFound();
         }
 
-        return View(new ShoppingCart
+        return View(new ShoppingCartVM
         {
-            Product = productIncludesCategory,
-            ProductId = id,
-            Count = 1,
+            ShoppingCart = new ShoppingCart
+            {
+                Product = productIncludesCategory,
+                ProductId = id,
+                Count = 1,
+            }
         });
     }
 
     [HttpPost]
     [Authorize]
-    public IActionResult Details(ShoppingCart shoppingCart)
+    public IActionResult Details(ShoppingCartVM shoppingCartVM)
     {
         var claimsEntity = User.Identity as ClaimsIdentity;
         var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -61,20 +65,19 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return Unauthorized();
         }
 
-        shoppingCart.ApplicationUserId = userId;
-
-        var cartForUserAndProduct = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.ApplicationUserId == userId && x.ProductId == shoppingCart.ProductId);
+        shoppingCartVM.ShoppingCart.ApplicationUserId = userId;
+        var cartForUserAndProduct = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.ApplicationUserId == userId && x.ProductId == shoppingCartVM.ShoppingCart.ProductId);
 
         if (cartForUserAndProduct != null)
         {
-            cartForUserAndProduct.Count += shoppingCart.Count;
+            cartForUserAndProduct.Count += shoppingCartVM.ShoppingCart.Count;
             _unitOfWork.ShoppingCart.Update(cartForUserAndProduct);
             _unitOfWork.Save();
             TempData["success"] = "Cart updated successfully";
         }
         else
         {
-            _unitOfWork.ShoppingCart.Add(shoppingCart);
+            _unitOfWork.ShoppingCart.Add(shoppingCartVM.ShoppingCart);
             _unitOfWork.Save();
             var cart = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId);
             HttpContext.Session.SetInt32(SD.SessionCart, cart?.Count() ?? 0);

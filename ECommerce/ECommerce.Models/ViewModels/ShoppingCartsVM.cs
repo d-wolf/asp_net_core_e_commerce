@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ECommerce.Models.ViewModels;
 
-public class ShoppingCartVM
+public class ShoppingCartsVM
 {
-    public required ShoppingCart ShoppingCart { get; set; }
+    public required OrderHeader OrderHeader { get; set; }
+    public required IEnumerable<ShoppingCart> ShoppingCartList { get; set; }
 }

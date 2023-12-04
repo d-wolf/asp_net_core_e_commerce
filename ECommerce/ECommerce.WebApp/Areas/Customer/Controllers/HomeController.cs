@@ -16,6 +16,14 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 
     public IActionResult Index()
     {
+        var claimsEntity = User.Identity as ClaimsIdentity;
+        var userId = claimsEntity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId != null)
+        {
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId).Count());
+        }
+
         var productsIncludesCategory = _unitOfWork.Product.GetAll(includeProperties: nameof(Category));
         return View(productsIncludesCategory);
     }
@@ -68,8 +76,8 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
         {
             _unitOfWork.ShoppingCart.Add(shoppingCart);
             _unitOfWork.Save();
-            var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.ApplicationUserId == userId);
-            HttpContext.Session.SetInt32(SD.SessionCart, cart?.Count ?? 0);
+            var cart = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId);
+            HttpContext.Session.SetInt32(SD.SessionCart, cart?.Count() ?? 0);
         }
 
         return RedirectToAction(nameof(Index));

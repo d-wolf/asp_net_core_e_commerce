@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.Models.Models;
 using ECommerce.DataAccess.Repository.IRepository;
@@ -287,6 +286,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return NotFound();
         }
 
+        HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == cart.ApplicationUserId).Count() - 1);
         _unitOfWork.ShoppingCart.Remove(cart);
         _unitOfWork.Save();
 

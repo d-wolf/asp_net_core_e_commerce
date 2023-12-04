@@ -1,8 +1,8 @@
 @model ShoppingCart
 
-
 <div>
     <form method="post">
+        <input asp-for="@Model.Id" type="text"/>
         <input asp-for="ProductId" hidden/>
         <div class="card shadow border-0 mt-4">
             <div class="card-header border-0 bg-primary bg-gradient ml-0 py-3">

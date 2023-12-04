@@ -178,8 +178,6 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    #region dirty
-                    // TODO: DIRTY!
                     if (!string.IsNullOrEmpty(Input.Role))
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
@@ -188,7 +186,6 @@ namespace ECommerce.WebApp.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, SD.RoleCustomer);
                     }
-                    #endregion
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

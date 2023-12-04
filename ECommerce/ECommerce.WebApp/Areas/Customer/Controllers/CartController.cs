@@ -180,8 +180,7 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
                 });
             }
 
-            // TODO: DIRTY!
-            var domain = "http://localhost:5062/";
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
             var options = new SessionCreateOptions
             {
                 SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={shoppingCartsVM.OrderHeader.Id}",

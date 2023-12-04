@@ -171,8 +171,7 @@ public class OrderController(IUnitOfWork unitOfWork) : Controller
             });
         }
 
-        // TODO: DIRTY!
-        var domain = "http://localhost:5062/";
+        var domain = Request.Scheme + "://" + Request.Host.Value + "/";
         var options = new SessionCreateOptions
         {
             SuccessUrl = domain + $"admin/order/PaymentConfirmation?id={orderVM.OrderHeader.Id}",

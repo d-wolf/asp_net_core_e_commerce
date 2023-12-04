@@ -16,15 +16,9 @@ public class DbInitializer(UserManager<IdentityUser> userManager, RoleManager<Id
     public void Initialize()
     {
         // Apply any pending migration
-        try
+        if (_context.Database.GetPendingMigrations().Any())
         {
-            if (_context.Database.GetPendingMigrations().Any())
-            {
-                _context.Database.Migrate();
-            }
-        }
-        catch (Exception)
-        {
+            _context.Database.Migrate();
         }
 
         // Create roles

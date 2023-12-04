@@ -6,16 +6,18 @@ using System.Security.Claims;
 using ECommerce.Models.ViewModels;
 using ECommerce.Utility;
 using Stripe.Checkout;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ECommerce.WebApp.Areas.Customer.Controllers;
 
 [Area("Customer")]
 [Authorize]
-public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller
+public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IEmailSender emailSender) : Controller
 {
     private readonly ILogger<HomeController> _logger = logger;
-
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IEmailSender _emailSender = emailSender;
 
     public IActionResult Index()
     {
@@ -220,9 +222,12 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusApproved, SD.PaymentStatusApproved);
                 _unitOfWork.Save();
             }
-            
+
             HttpContext.Session.Clear();
         }
+
+        _emailSender.SendEmailAsync(orderHeader.ApplicationUser!.Email!, "New Order E-Commerce",
+         $"<p>New Order Created - {orderHeader.Id}</p>");
 
         var shoppingCarts = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == orderHeader.ApplicationUserId);
         _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);

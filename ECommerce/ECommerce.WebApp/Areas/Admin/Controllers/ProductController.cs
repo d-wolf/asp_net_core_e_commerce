@@ -1,3 +1,4 @@
+using ECommerce.DataAccess.Data;
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models.Models;
 using ECommerce.Models.ViewModels;
@@ -25,7 +26,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
     {
         if (id != null && id != 0)
         {
-            var product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+            var product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, includeProperties: "ProductImages");
             if (product == null) return NotFound();
             return View(new ProductVM()
             {
@@ -39,7 +40,6 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
         }
         else
         {
-
             return View(new ProductVM()
             {
                 Product = new(),
@@ -50,32 +50,12 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
                 }),
             });
         }
-
     }
 
     [HttpPost]
-    public IActionResult Upsert(ProductVM productVM, IFormFile? file)
+    public IActionResult Upsert(ProductVM productVM, List<IFormFile>? files)
     {
         if (!ModelState.IsValid) return View(productVM);
-
-        if (file != null)
-        {
-            // if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-            // {
-            //     var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productVM.Product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
-            //     if (System.IO.File.Exists(oldPath))
-            //     {
-            //         System.IO.File.Delete(oldPath);
-            //     }
-            // }
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string path = Path.Combine("images", "product", fileName);
-            string wwwwrootpath = Path.Combine(_webHostEnvironment.WebRootPath, path);
-            new FileInfo(wwwwrootpath).Directory?.Create();
-            using var fileStream = new FileStream(wwwwrootpath, FileMode.Create);
-            file.CopyTo(fileStream);
-            // productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
-        }
 
         if (productVM.Product.Id != 0)
         {
@@ -89,6 +69,30 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
         }
 
         _unitOfWork.Save();
+
+        if (files != null)
+        {
+            foreach (var f in files)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(f.FileName);
+                string path = Path.Combine("images", "product", $"product-{productVM.Product.Id}", fileName);
+                string wwwwrootpath = Path.Combine(_webHostEnvironment.WebRootPath, path);
+                new FileInfo(wwwwrootpath).Directory?.Create();
+                using var fileStream = new FileStream(wwwwrootpath, FileMode.Create);
+                f.CopyTo(fileStream);
+                var productImage = new ProductImage
+                {
+                    ProductId = productVM.Product.Id,
+                    ImageUrl = Path.DirectorySeparatorChar + path,
+                };
+
+                _unitOfWork.ProductImage.Add(productImage);
+            }
+
+            _unitOfWork.Save();
+        }
+
+
         return RedirectToAction(nameof(Index), nameof(Product));
     }
 

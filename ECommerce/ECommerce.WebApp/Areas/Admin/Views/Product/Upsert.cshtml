@@ -12,9 +12,6 @@
         <div class="card-body p-4">
             <form method="post" enctype="multipart/form-data">
                 <input asp-for="Product.Id" hidden>
-                @* <input asp-for="Product.ImageUrl" hidden> *@
-                @* <div class="row"> *@
-                @* <div class="col"> *@
                 <div class="form-group">
                     <label asp-for="Product.Title" class="pb-2"></label>
                     <input type="text" class="form-control" asp-for="Product.Title">
@@ -30,12 +27,6 @@
                     <input type="text" class="form-control" asp-for="Product.Author">
                     <span asp-validation-for="Product.Author" class="text-danger"></span>
                 </div>
-                @* </div> *@
-                @* <div class="col" @(Model.Product.ImageUrl == null ? "hidden" : "")>
-                <img src="@Model.Product.ImageUrl" width="100%" />
-                </div> *@
-                @* </div> *@
-
                 <div class="form-group mt-4">
                     <label asp-for="Product.Description" class="pb-2"></label>
                     <textarea class="form-control" asp-for="Product.Description" rows="5"></textarea>
@@ -61,11 +52,10 @@
                     <input type="number" class="form-control" asp-for="Product.Price100">
                     <span asp-validation-for="Product.Price100" class="text-danger"></span>
                 </div>
-                @* <div class="form-group mt-4">
-                    <label asp-for="Product.ImageUrl" class="pb-2"></label>
-                    <input type="file" name="file" class="form-control" asp-for="Product.ImageUrl">
-                    <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
-                </div> *@
+                <div class="form-group mt-4">
+                    <label asp-for="Product.ProductImages" class="pb-2"></label>
+                    <input type="file" name="files" class="form-control" multiple>
+                </div>
                 <div class="form-group mt-4">
                     <label asp-for="Product.CategoryId" class="pb-2"></label>
                     <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select"
@@ -73,6 +63,12 @@
                         <option disabled selected>-- Select Category --</option>
                     </select>
                     <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                </div>
+                <div class="mt-4">
+                    @foreach (var img in Model.Product.ProductImages)
+                    {
+                        <img class="p-2" src="@img.ImageUrl" width="33%" />
+                    }
                 </div>
                 <div class="row mt-4">
                     <div class="col-6 col-md-3">
@@ -89,7 +85,5 @@
 </div>
 
 @section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial"></partial>
-    }
+    <partial name="_ValidationScriptsPartial"></partial>
 }

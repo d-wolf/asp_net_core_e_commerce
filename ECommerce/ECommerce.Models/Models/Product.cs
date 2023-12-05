@@ -49,6 +49,7 @@ public class Product
     [ValidateNever]
     public Category? Category { get; set; }
 
+    [DisplayName("Images")]
     [ValidateNever]
-    public ICollection<ProductImage>? ProductImages { get; set; }
+    public ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
 }

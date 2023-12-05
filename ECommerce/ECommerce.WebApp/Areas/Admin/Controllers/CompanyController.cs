@@ -62,6 +62,7 @@ public class CompanyController(IUnitOfWork unitOfWork) : Controller
         return Json(new { data = companyList });
     }
 
+    [HttpDelete]
     public IActionResult Delete(int? id)
     {
         var companyToDelete = _unitOfWork.Company.GetFirstOrDefault(x => x.Id == id);

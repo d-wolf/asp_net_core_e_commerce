@@ -101,6 +101,7 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
         return Json(new { data = productList });
     }
 
+    [HttpDelete]
     public IActionResult Delete(int? id)
     {
         var productToDelete = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);

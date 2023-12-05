@@ -211,8 +211,6 @@ public class OrderController(IUnitOfWork unitOfWork) : Controller
         return View(id);
     }
 
-
-
     #region API Calls
 
     [HttpGet]

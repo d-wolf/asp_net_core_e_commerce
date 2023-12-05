@@ -1,4 +1,3 @@
-using ECommerce.DataAccess.Data;
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models.Models;
 using ECommerce.Models.ViewModels;
@@ -96,6 +95,29 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
         return RedirectToAction(nameof(Index), nameof(Product));
     }
 
+    public IActionResult DeleteImage(int? id)
+    {
+        var imgToDelete = _unitOfWork.ProductImage.GetFirstOrDefault(x => x.Id == id);
+        if (imgToDelete == null)
+        {
+            return NotFound();
+        }
+
+        if (!string.IsNullOrEmpty(imgToDelete.ImageUrl))
+        {
+            var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, imgToDelete.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
+            if (System.IO.File.Exists(oldPath))
+            {
+                System.IO.File.Delete(oldPath);
+            }
+        }
+
+        _unitOfWork.ProductImage.Remove(imgToDelete);
+        _unitOfWork.Save();
+        TempData["success"] = "Delete successful";
+        return RedirectToAction(nameof(Upsert), new { id = imgToDelete.ProductId });
+    }
+
     #region API Calls
 
     [HttpGet]
@@ -109,24 +131,31 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
     public IActionResult Delete(int? id)
     {
         var productToDelete = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+
         if (productToDelete == null)
         {
             return Json(new { success = false, message = "Error while deleting" });
         }
 
-        // if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
-        // {
-        //     var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
-        //     if (System.IO.File.Exists(oldPath))
-        //     {
-        //         System.IO.File.Delete(oldPath);
-        //     }
-        // }
+        string path = Path.Combine("images", "product", $"product-{id}");
+        string wwwwrootpath = Path.Combine(_webHostEnvironment.WebRootPath, path);
 
+        if (Directory.Exists(wwwwrootpath))
+        {
+            var filesPaths = Directory.GetFiles(wwwwrootpath);
+            foreach (var filePath in filesPaths)
+            {
+                System.IO.File.Delete(filePath);
+            }
+
+            Directory.Delete(wwwwrootpath);
+        }
+
+        var imagesToDelete = _unitOfWork.ProductImage.GetAll(x => x.ProductId == id);
+        _unitOfWork.ProductImage.RemoveRange(imagesToDelete);
         _unitOfWork.Product.Remove(productToDelete);
         _unitOfWork.Save();
         return Json(new { success = true, message = "Successfully deleted" });
     }
-
     #endregion
 }

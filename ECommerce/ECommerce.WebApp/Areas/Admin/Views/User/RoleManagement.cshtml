@@ -1,17 +1,62 @@
-@model UserVM
+@model RoleManagementVM
 
-<h2>Role Management</h2>
+@{
+    var companyVisible = "display:none";
 
-<input asp-for="ApplicationUser.Name" />
+    if (Model.CurrentRole == SD.RoleCompany)
+    {
+        companyVisible = "display:block";
+    }
+}
 
-@* <div class="mb-3">
-<select asp-for="Role" asp-items="@RoleList" class="form-select">
-<option disabled selected>-- Select Role --</option>
-</select>
-</div> *@
-@* <div class="mb-3">
-<select asp-for="ApplicationUser.CompanyId" style="display: none;" asp-items="@CompanyList"
-class="form-select">
-<option disabled selected>-- Select Company --</option>
-</select>
-</div> *@
+<div class="card shadow border-0 mt-4">
+    <div class="card-header border-0 bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="py-2 text-white">Manage User Role</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            <input asp-for="ApplicationUser.Id" hidden>
+            <div class="form-group">
+                <label asp-for="ApplicationUser.Name" class="pb-2"></label>
+                <input type="text" class="form-control" asp-for="ApplicationUser.Name" readonly>
+            </div>
+            <div class="form-group mt-4">
+                <select asp-for="CurrentRole" asp-items="@Model.RoleList" class="form-select"></select>
+            </div>
+            <div class="form-group mt-4">
+                <select asp-for="ApplicationUser.CompanyId" style="@companyVisible" asp-items="@Model.CompanyList"
+                    class="form-select"></select>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">Update Role</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a class="btn btn-light w-100" asp-action="Index">Back</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"></partial>
+    <script>
+        $(document).ready(function () {
+            $('#CurrentRole').change(function () {
+                var selection = $('#CurrentRole Option:Selected').text();
+                if (selection == 'Company') {
+                    $('#ApplicationUser_CompanyId').show();
+                } else {
+                    $('#ApplicationUser_CompanyId').hide();
+                }
+            })
+        })
+    </script>
+}

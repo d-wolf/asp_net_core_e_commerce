@@ -49,6 +49,39 @@ public class UserController(IUnitOfWork unitOfWork, UserManager<IdentityUser> us
         });
     }
 
+    [HttpPost]
+    public IActionResult RoleManagement(RoleManagementVM roleManagementVM)
+    {
+        var applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == roleManagementVM.ApplicationUser.Id, includeProperties: nameof(Company));
+        if (applicationUser == null)
+        {
+            return NotFound();
+        }
+
+        var role = _userManager.GetRolesAsync(applicationUser).GetAwaiter().GetResult().First();
+
+        if (roleManagementVM.CurrentRole != role)
+        {
+            // Role was updated
+            if (roleManagementVM.CurrentRole == SD.RoleCompany)
+            {
+                applicationUser.CompanyId = roleManagementVM.ApplicationUser.CompanyId;
+            }
+            else 
+            {
+                applicationUser.CompanyId = null;
+                applicationUser.Company = null;
+            }
+
+            _unitOfWork.ApplicationUser.Update(applicationUser);
+            _unitOfWork.Save();
+            _userManager.RemoveFromRoleAsync(applicationUser, role).GetAwaiter().GetResult();
+            _userManager.AddToRoleAsync(applicationUser, roleManagementVM.CurrentRole).GetAwaiter().GetResult();
+        }
+
+        return RedirectToAction("Index");
+    }
+
     #region API Calls
 
     [HttpGet]

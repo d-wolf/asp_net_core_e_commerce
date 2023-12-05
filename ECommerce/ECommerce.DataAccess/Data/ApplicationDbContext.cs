@@ -63,7 +63,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 90,
                     Price50 = 85,
                     Price100 = 80,
-                    ImageUrl = "",
+                    // ImageUrl = "",
                 },
                 new Product
                 {
@@ -76,7 +76,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 30,
                     Price50 = 25,
                     Price100 = 20,
-                    ImageUrl = "",
+                    // ImageUrl = "",
                 },
                 new Product
                 {
@@ -89,7 +89,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 50,
                     Price50 = 40,
                     Price100 = 35,
-                    ImageUrl = "",
+                    // ImageUrl = "",
                 },
                 new Product
                 {
@@ -102,7 +102,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 65,
                     Price50 = 60,
                     Price100 = 55,
-                    ImageUrl = "",
+                    // ImageUrl = "",
                 },
                 new Product
                 {
@@ -115,7 +115,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 27,
                     Price50 = 25,
                     Price100 = 20,
-                    ImageUrl = "",
+                    // ImageUrl = "",
                 },
                 new Product
                 {
@@ -128,7 +128,7 @@ public class ApplicationDbContext : IdentityDbContext
                     Price = 23,
                     Price50 = 22,
                     Price100 = 20,
-                    ImageUrl = "",
+                    // ImageUrl = "",
                 }
        );
     }

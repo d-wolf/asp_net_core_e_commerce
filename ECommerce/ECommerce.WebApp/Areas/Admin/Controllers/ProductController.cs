@@ -60,21 +60,21 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
 
         if (file != null)
         {
-            if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-            {
-                var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productVM.Product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
-                if (System.IO.File.Exists(oldPath))
-                {
-                    System.IO.File.Delete(oldPath);
-                }
-            }
+            // if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+            // {
+            //     var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productVM.Product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
+            //     if (System.IO.File.Exists(oldPath))
+            //     {
+            //         System.IO.File.Delete(oldPath);
+            //     }
+            // }
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             string path = Path.Combine("images", "product", fileName);
             string wwwwrootpath = Path.Combine(_webHostEnvironment.WebRootPath, path);
             new FileInfo(wwwwrootpath).Directory?.Create();
             using var fileStream = new FileStream(wwwwrootpath, FileMode.Create);
             file.CopyTo(fileStream);
-            productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
+            // productVM.Product.ImageUrl = Path.DirectorySeparatorChar + path;
         }
 
         if (productVM.Product.Id != 0)
@@ -110,14 +110,14 @@ public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHo
             return Json(new { success = false, message = "Error while deleting" });
         }
 
-        if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
-        {
-            var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
-            if (System.IO.File.Exists(oldPath))
-            {
-                System.IO.File.Delete(oldPath);
-            }
-        }
+        // if (!string.IsNullOrEmpty(productToDelete.ImageUrl))
+        // {
+        //     var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
+        //     if (System.IO.File.Exists(oldPath))
+        //     {
+        //         System.IO.File.Delete(oldPath);
+        //     }
+        // }
 
         _unitOfWork.Product.Remove(productToDelete);
         _unitOfWork.Save();

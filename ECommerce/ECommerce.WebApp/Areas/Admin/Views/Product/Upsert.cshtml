@@ -64,12 +64,20 @@
                     </select>
                     <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                 </div>
-                <div class="mt-4">
+
+                <div class="row row-cols-2 row-cols-lg-3">
                     @foreach (var img in Model.Product.ProductImages)
                     {
-                        <img class="p-2" src="@img.ImageUrl" width="20%" />
+                        <div class="col py-4">
+                            <img src="@img.ImageUrl" width="100%" />
+                            <div class="mt-2">
+                                <a class="btn btn-danger" asp-action="DeleteImage" asp-route-id="@img.Id"><i class="bi bi-trash3-fill"></i> Delete</a>
+                            </div>
+                        </div>
                     }
                 </div>
+
+
                 <div class="row mt-4">
                     <div class="col-6 col-md-3">
                         <button type="submit" class="btn btn-primary w-100">@(Model.Product.Id != 0 ? "Update" :

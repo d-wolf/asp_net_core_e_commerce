@@ -23,11 +23,54 @@
                         </div>
                     </div>
                     <div class="row">
-                        @* <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                            <img src="@Model.ShoppingCart.Product?.ImageUrl" width="100%" class="rounded" />
-                        </div> *@
-                        <div class="col-12 col-lg-6 offset-lg-1">
 
+                        <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+
+                            @if (Model.ShoppingCart.Product != null && Model.ShoppingCart.Product.ProductImages.Count >
+                            0)
+                            {
+                                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
+                                        @foreach (var imgWithIndex in
+                                       Model.ShoppingCart.Product.ProductImages.Select((image, index) => new
+                                       {
+                                           Image = image,
+                                           Index = index,
+                                       }))
+                                        {
+                                            <button type="button" data-bs-target="#carouselExampleIndicators"
+                                                data-bs-slide-to="@imgWithIndex.Index"
+                                                class="@(imgWithIndex.Index == 0 ? "active" : "")" aria-current="true"
+                                                aria-label="Slide 1"></button>
+                                        }
+                                    </div>
+                                    <div class="carousel-inner">
+                                        @foreach (var imgWithIndex in
+                                       Model.ShoppingCart.Product.ProductImages.Select((image, index) => new
+                                       {
+                                           Image = image,
+                                           Index = index,
+                                       }))
+                                        {
+                                            <div class="carousel-item @(imgWithIndex.Index == 0 ? "active" : "")">
+                                                <img src="@imgWithIndex.Image.ImageUrl" class="d-block w-100" alt="...">
+                                            </div>
+                                        }
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-12 col-lg-6 offset-lg-1">
                             <div class="col-12 col-md-6 pb-4">
                                 <span class="badge bg-secondary">@Model.ShoppingCart.Product?.Category?.Name</span>
                             </div>

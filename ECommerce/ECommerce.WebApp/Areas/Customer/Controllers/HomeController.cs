@@ -25,7 +25,7 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId).Count());
         }
 
-        var productsIncludesCategory = _unitOfWork.Product.GetAll(includeProperties: nameof(Category));
+        var productsIncludesCategory = _unitOfWork.Product.GetAll(includeProperties: [nameof(Category), "ProductImages"]);
         return View(productsIncludesCategory);
     }
 
@@ -36,7 +36,7 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return BadRequest();
         }
 
-        var productIncludesCategory = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, nameof(Category));
+        var productIncludesCategory = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, [nameof(Category), "ProductImages"]);
         if (productIncludesCategory == null)
         {
             return NotFound();

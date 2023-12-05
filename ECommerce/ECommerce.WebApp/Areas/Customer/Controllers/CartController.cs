@@ -29,10 +29,12 @@ public class CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
             return Unauthorized();
         }
 
+        _unitOfWork.ProductImage.GetAll();
+
         var shoppingCartVM = new ShoppingCartsVM()
         {
             OrderHeader = new(),
-            ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, nameof(Product)).Select(x =>
+            ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId, includeProperties: [nameof(Product), "Product.ProductImages"]).Select(x =>
                 {
                     x.Price = GetPriceBasedQuantity(x);
                     return x;
